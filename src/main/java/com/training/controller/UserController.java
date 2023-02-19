@@ -17,17 +17,27 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
+@CrossOrigin("http://localhost:4200")
 public class UserController {
     @Autowired
     private ProductRepository productRepository;
     @Autowired
     public UserRepository userRepository;
 
-    @GetMapping
+    @GetMapping("users")
     public ResponseEntity<List> fetchAll(){
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
+    }
+
+    @PostMapping("/add-user")
+    public ResponseEntity<Void> createUser(@RequestBody User dto) {
+        userRepository.save(dto);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
     }
 
     @GetMapping("{id}")
@@ -40,18 +50,18 @@ public class UserController {
 
     }
 
-    @GetMapping("/products")
-    public ResponseEntity<List<User>> getAll() {
-        return ResponseEntity
-                .ok(userRepository.findAll());
-    }
-
-    @PostMapping("/products")
-    public ResponseEntity<Void> createProduct(@RequestBody User dto) {
-        userRepository.save(dto);
-
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .build();
-    }
+//    @GetMapping("/products")
+//    public ResponseEntity<List<User>> getAll() {
+//        return ResponseEntity
+//                .ok(userRepository.findAll());
+//    }
+//
+//    @PostMapping("/products")
+//    public ResponseEntity<Void> createProduct(@RequestBody User dto) {
+//        userRepository.save(dto);
+//
+//        return ResponseEntity
+//                .status(HttpStatus.CREATED)
+//                .build();
+//    }
 }
