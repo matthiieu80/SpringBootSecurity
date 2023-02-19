@@ -58,7 +58,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeHttpRequests(requests -> {
                     requests
-                            .requestMatchers("/api/auth/signin").permitAll()
+                            .requestMatchers("/api/**").permitAll()
                             .anyRequest()
                             .authenticated();
                 });
