@@ -21,6 +21,14 @@ public class User implements UserDetails {
     @Column(unique = true)
     private String username;
     private String password;
+
+    private String firstname;
+
+    private String lastname;
+
+    private String adresseMail;
+
+    private String phoneNumber;
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
     private List<Role> roleList;
 
