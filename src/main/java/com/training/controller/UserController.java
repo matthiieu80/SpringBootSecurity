@@ -39,16 +39,27 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
-
-    @GetMapping("{id}")
-    public ResponseEntity<User> fetchById(@PathVariable("id") Long userId) {
-        Optional<User> user = userRepository.findById(userId);
-        if (user.isEmpty()){
-            return ResponseEntity.notFound().build();
+    @PostMapping("/user/{id}")
+    public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id){
+        Optional<User> optionalContact = userRepository.findById(id);
+        if (optionalContact.isPresent()) {
+            User existingContact = optionalContact.get();
+            userRepository.delete(existingContact);
         }
-        return ResponseEntity.ok(user.get());
-
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
+
+//    @DeleteMapping("{id}")
+//    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long Id) {
+//        Optional<User> user = userRepository.findById(Id);
+//        if (user.isEmpty()){
+//            return ResponseEntity.notFound().build();
+//        }
+//        userRepository.delete(user.get());
+//        return ResponseEntity.noContent().build();
+//    }
 
 //    @GetMapping("/products")
 //    public ResponseEntity<List<User>> getAll() {
