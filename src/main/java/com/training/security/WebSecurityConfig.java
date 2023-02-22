@@ -1,6 +1,7 @@
 package com.training.security;
 
 
+
 import com.training.security.jwt.AuthTokenFilter;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
