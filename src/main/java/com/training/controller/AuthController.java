@@ -25,8 +25,8 @@ public class AuthController {
     //
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(){
-        String username = "matthieu";
-        String password = "matthieu";
+        String username = "admin";
+        String password = "azerty";
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         SecurityContextHolder.getContext().setAuthentication(auth);
