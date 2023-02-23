@@ -11,6 +11,8 @@ import com.training.security.jwt.JwtUtils;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -46,11 +48,9 @@ public class AuthController {
     PasswordEncoder encoder;
 
 
-   
     @PostMapping("/signin")
 
     public ResponseEntity<?> authenticate(@RequestBody SigninDto dto) {
-
 
 
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
@@ -65,18 +65,27 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SigninDto signUpRequest) {
 
+        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .build();
+        }
+
+        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+            return ResponseEntity
+                    .status(HttpStatus.CONFLICT)
+                    .build();
+        }
+
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
                 signUpRequest.getPassword(),
                 encoder.encode(signUpRequest.getPassword()));
 
-        // Definition du rôle de l'utilisateur
+
+         //Definition du rôle de l'utilisateur
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
-        roles.add(new Role(ROLE_USER));
-        roles.add(new Role(ROLE_MODERATOR));
-        roles.add(new Role(ROLE_ADMIN));
-
 
         //Si, pas de rôle de defini
         if (strRoles == null) {
@@ -107,6 +116,11 @@ public class AuthController {
                 }
             });
         }
-        return null;
+        user.setRoles(roles);
+        userRepository.save(user);
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .build();
     }
     }

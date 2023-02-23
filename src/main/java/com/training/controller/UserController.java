@@ -3,9 +3,7 @@ package com.training.controller;
 
 
 
-import com.training.repository.ProductRepository;
 import com.training.repository.UserRepository;
-import com.training.repository.entity.Product;
 import com.training.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,8 +18,7 @@ import java.util.Optional;
 @RequestMapping("/api")
 @CrossOrigin("http://localhost:4200")
 public class UserController {
-    @Autowired
-    private ProductRepository productRepository;
+
     @Autowired
     public UserRepository userRepository;
 

@@ -1,9 +1,6 @@
 package com.training;
 
-import com.training.repository.ProductRepository;
 import com.training.repository.UserRepository;
-import com.training.repository.entity.ERole;
-import com.training.repository.entity.Product;
 import com.training.repository.entity.Role;
 import com.training.repository.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +8,8 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -35,7 +30,7 @@ public class BackendProductApplication {
     PasswordEncoder encoder;
 
     @Bean
-    CommandLineRunner commandLineRunner(ProductRepository productRepository){
+    CommandLineRunner commandLineRunner( ){
 
         return args -> {
             Set<Role> roles = new HashSet<>();
