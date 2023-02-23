@@ -18,11 +18,13 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    private int type; //type 0 = User, type 1 = Admin, type 2 = SuperAdmin
     private String username;
-
     private String email;
+    private String nom;
+    private String prenom;
     private String password;
+    private String img;
 
 
 
@@ -33,6 +35,17 @@ public class User {
     private Set<Role> roles = new HashSet<>();
 
     public User() {
+    }
+
+    public User(int type, String username, String email, String nom, String prenom, String password, String img, Set<Role> roles) {
+        this.type = type;
+        this.username = username;
+        this.email = email;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.password = password;
+        this.img = img;
+        this.roles = roles;
     }
 
     public User(String username, String email, String password, Set<Role> roles) {

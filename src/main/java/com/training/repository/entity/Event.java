@@ -3,6 +3,7 @@ package com.training.repository.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Event {
@@ -17,6 +18,8 @@ public class Event {
     private String endTime;
     @Column(name = "category_color")
     private String categoryColor;
+
+    private List<Event>
 
     public Event() {}
 
