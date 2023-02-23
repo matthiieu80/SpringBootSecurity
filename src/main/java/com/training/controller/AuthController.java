@@ -2,6 +2,7 @@ package com.training.controller;
 
 
 import com.training.controller.dto.SigninDto;
+import com.training.controller.dto.SignupDto;
 import com.training.repository.RoleRepository;
 import com.training.repository.UserRepository;
 import com.training.repository.entity.ERole;
@@ -49,11 +50,9 @@ public class AuthController {
 
 
     @PostMapping("/signin")
-
     public ResponseEntity<?> authenticate(@RequestBody SigninDto dto) {
 
-
-        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getUsername(), dto.getPassword()));
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         String tokenGenerated = jwtUtils.generateJwtToken(auth);
@@ -63,13 +62,8 @@ public class AuthController {
 
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SigninDto signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupDto signUpRequest) {
 
-        if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .status(HttpStatus.CONFLICT)
-                    .build();
-        }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
@@ -79,7 +73,7 @@ public class AuthController {
 
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getPassword(),
+                signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
 
