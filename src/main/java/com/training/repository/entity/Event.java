@@ -10,26 +10,19 @@ public class Event {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String subject;
-    private String location;
-    @Column(name = "start_time")
-    private String startTime;
-    @Column(name = "end_time")
-    private String endTime;
-    @Column(name = "category_color")
-    private String categoryColor;
 
-    private List<Event>
-
-    public Event() {}
+    private String title;
+    private String type;
+    private String time;
 
 
-    public Event(String subject, String location, LocalDateTime startTime, LocalDateTime endTime, String categoryColor) {
-        this.subject = subject;
-        this.location = location;
-        this.startTime = startTime.toString();
-        this.endTime = endTime.toString();
-        this.categoryColor = categoryColor;
+    public Event() {
+    }
+
+    public Event(String title, String type, String time) {
+        this.title = title;
+        this.type = type;
+        this.time = time;
     }
 
     public Long getId() {
@@ -40,43 +33,27 @@ public class Event {
         this.id = id;
     }
 
-    public String getSubject() {
-        return subject;
+    public String getTitle() {
+        return title;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getLocation() {
-        return location;
+    public String getTime() {
+        return time;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public String getStartTime() {
-        return startTime;
+    public String getType() {
+        return type;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime.toString();
-    }
-
-    public String getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime.toString();
-    }
-
-    public String getCategoryColor() {
-        return categoryColor;
-    }
-
-    public void setCategoryColor(String categoryColor) {
-        this.categoryColor = categoryColor;
+    public void setType(String type) {
+        this.type = type;
     }
 }
