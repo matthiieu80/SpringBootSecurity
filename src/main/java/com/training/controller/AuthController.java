@@ -22,10 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.training.repository.entity.ERole.*;
 
@@ -57,9 +54,11 @@ public class AuthController {
 
         String tokenGenerated = jwtUtils.generateJwtToken(auth);
 
-        return ResponseEntity.ok(tokenGenerated);
-    }
+        Map<String, String> response = new HashMap<>();
+        response.put("token", tokenGenerated);
 
+        return ResponseEntity.ok(response);
+    }
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignupDto signUpRequest) {
