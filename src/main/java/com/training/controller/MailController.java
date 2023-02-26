@@ -21,7 +21,7 @@
 //public class MailController {
 //
 //    @Autowired
-//    private SendMail notificationService;
+//    private SendMail sendMail;
 //
 //    @Autowired
 //    private JavaMailSender javaMailSender;
@@ -30,9 +30,10 @@
 //
 //    @RequestMapping("/send-mail")
 //    public String sendMail() {
+//
 //        user.setEmail("");
 //        try {
-//            notificationService.sendMail(user);
+//            sendMail.sendMail(user);
 //        } catch (MailException mailException) {
 //            System.out.println(mailException);
 //        }
@@ -42,8 +43,8 @@
 //    public String sendWithAttachment() throws MessagingException {
 //        user.setEmail("receiver's email address");
 //        try {
-//            notificationService.sendMailWithAttachement(user);
-//        } catch (MailException mailException) {
+//            sendMail.sendMailWithAttachement(user);
+//        } catch (MailException | javax.mail.MessagingException mailException) {
 //            System.out.println(mailException);
 //        }
 //        return "Your mail has been send to the user.";

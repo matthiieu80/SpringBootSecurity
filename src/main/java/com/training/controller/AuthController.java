@@ -1,6 +1,7 @@
 package com.training.controller;
 
 
+import com.training.controller.dto.JwtResponse;
 import com.training.controller.dto.SigninDto;
 import com.training.controller.dto.SignupDto;
 import com.training.repository.RoleRepository;
@@ -9,6 +10,7 @@ import com.training.repository.entity.ERole;
 import com.training.repository.entity.Role;
 import com.training.repository.entity.User;
 import com.training.security.jwt.JwtUtils;
+import com.training.service.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
@@ -22,10 +24,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.training.repository.entity.ERole.*;
 
@@ -33,6 +33,7 @@ import static com.training.repository.entity.ERole.*;
 @RequestMapping("/api/auth")
 @CrossOrigin("http://localhost:4200")
 public class AuthController {
+
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -51,13 +52,21 @@ public class AuthController {
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticate(@RequestBody SigninDto dto) {
-
         Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(), dto.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         String tokenGenerated = jwtUtils.generateJwtToken(auth);
 
-        return ResponseEntity.ok(tokenGenerated);
+        User userDetails = (User) auth.getPrincipal();
+        List<String> roles = userDetails.getAuthorities().stream()
+                .map(item -> item.getAuthority())
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(new JwtResponse(tokenGenerated,
+                userDetails.getId(),
+                userDetails.getUsername(),
+                userDetails.getEmail(),
+                roles));
     }
 
 
@@ -72,7 +81,8 @@ public class AuthController {
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getUsername(),
+        User user = new User(
+                signUpRequest.getUsername(),
                 signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
