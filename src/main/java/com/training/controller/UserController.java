@@ -1,8 +1,6 @@
 package com.training.controller;
 
 
-
-
 import com.training.repository.UserRepository;
 import com.training.repository.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
@@ -10,9 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +23,7 @@ public class UserController {
     public UserRepository userRepository;
 
     @GetMapping("users")
-    public ResponseEntity<List> fetchAll(){
+    public ResponseEntity<List> fetchAll() {
         List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
     }
@@ -38,8 +36,9 @@ public class UserController {
                 .status(HttpStatus.CREATED)
                 .build();
     }
+
     @PostMapping("/user/{id}")
-    public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id){
+    public ResponseEntity<Void> deleteContact(@PathVariable("id") Long id) {
         Optional<User> optionalContact = userRepository.findById(id);
         if (optionalContact.isPresent()) {
             User existingContact = optionalContact.get();
@@ -50,17 +49,14 @@ public class UserController {
                 .build();
     }
 
-//    @GetMapping("/username")
-//    @ResponseBody
-//    public String currentUserNameSimple(HttpServletRequest request) {
-//
-//        Principal principal = request.getUserPrincipal();
-//
-//        return "test";
-//    }
+    @GetMapping("/username")
+    @ResponseBody
+    public ResponseEntity<Object> currentUserNameSimple(HttpServletRequest request) {
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(user);
 
 
-
+    }
 //    @DeleteMapping("{id}")
 //    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long Id) {
 //        Optional<User> user = userRepository.findById(Id);
