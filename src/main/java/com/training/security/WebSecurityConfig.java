@@ -77,7 +77,7 @@ public class WebSecurityConfig {
                 .and()
                 .authorizeHttpRequests(requests -> {
                     requests
-                            .requestMatchers("/api/**").permitAll()
+                            .requestMatchers("/api/auth/**").permitAll()
                             .anyRequest()
                             .authenticated();
                 });

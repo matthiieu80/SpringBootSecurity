@@ -5,12 +5,14 @@ package com.training.controller;
 
 import com.training.repository.UserRepository;
 import com.training.repository.entity.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,6 +49,17 @@ public class UserController {
                 .status(HttpStatus.OK)
                 .build();
     }
+
+//    @GetMapping("/username")
+//    @ResponseBody
+//    public String currentUserNameSimple(HttpServletRequest request) {
+//
+//        Principal principal = request.getUserPrincipal();
+//
+//        return "test";
+//    }
+
+
 
 //    @DeleteMapping("{id}")
 //    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long Id) {

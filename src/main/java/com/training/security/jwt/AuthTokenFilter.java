@@ -5,7 +5,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,8 +31,8 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         String tokenJwt = parseJwt(request);
         if (tokenJwt != null && jwtUtils.validateToken(tokenJwt)) {
 
-            String username = jwtUtils.getUsernameFromToken(tokenJwt);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            String email = jwtUtils.getEmailFromToken(tokenJwt);
+            UserDetails userDetails = userDetailsService.loadUserByUsername(email);
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                     userDetails,
                     null,
