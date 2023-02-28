@@ -2,8 +2,8 @@ package com.training.controller;
 
 
 import com.training.repository.UserRepository;
+import com.training.repository.entity.Event;
 import com.training.repository.entity.User;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,6 +28,7 @@ public class UserController {
         return ResponseEntity.ok(users);
     }
 
+
     @PostMapping("/add-user")
     public ResponseEntity<Void> createUser(@RequestBody User dto) {
         userRepository.save(dto);
@@ -49,13 +50,23 @@ public class UserController {
                 .build();
     }
 
-    @GetMapping("/username")
+    @GetMapping("/profile")
     @ResponseBody
-    public ResponseEntity<Object> currentUserNameSimple(HttpServletRequest request) {
+    public ResponseEntity<Object> getConnectedUserProfil() {
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return ResponseEntity.ok(user);
+        Optional<User> userfull = userRepository.findByEmail(user.getEmail());
+        if (userfull.isPresent()){
+            return ResponseEntity.ok(userfull);
+        } else
+            return ResponseEntity.notFound().build();
+    }
 
-
+    @PostMapping("/update")
+    public ResponseEntity<Object> updateUser(@RequestBody User user){
+        userRepository.save(user);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .build();
     }
 //    @DeleteMapping("{id}")
 //    public ResponseEntity<Void> deleteUser(@PathVariable("id") Long Id) {
