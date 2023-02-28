@@ -29,7 +29,7 @@ public class BackendProductApplication {
     @Autowired
     PasswordEncoder encoder;
 
-    @Bean
+/*   @Bean
     CommandLineRunner commandLineRunner( ){
 
         return args -> {
@@ -48,7 +48,7 @@ public class BackendProductApplication {
 
             userRepository.saveAll(user);
         };
-    }
+    }*/
 }
 
 
